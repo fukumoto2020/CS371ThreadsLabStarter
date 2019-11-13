@@ -34,6 +34,7 @@ public class AnimationView extends SurfaceView{
     public AnimationView(Context context) {
         super(context);
         myInitializationStuff();
+
     }
 
     public AnimationView(Context context, AttributeSet set) {
@@ -80,6 +81,7 @@ public class AnimationView extends SurfaceView{
         for(Animation anim : anims) {
             anim.draw(canvas);
         }
+
     }//draw
 
     /** This method is called each time the seekbar's progress changes.  This will always be a

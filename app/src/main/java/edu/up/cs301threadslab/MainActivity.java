@@ -20,6 +20,8 @@ public class MainActivity extends Activity
     private Button theButton;
     private SeekBar theSeekBar;
 
+    private ThreadClass myThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,10 @@ public class MainActivity extends Activity
         myAV = (AnimationView)findViewById(R.id.animationArea);
         myAV.addAnimation(new StarAnimation(myAV.getMyWidth(), myAV.getMyHeight()));
 
+        myThread = new ThreadClass(myAV);
+
+        myThread.start();
+
         //Let me know when someone taps the button
         theButton = (Button)findViewById(R.id.button);
         theButton.setOnClickListener(this);
@@ -36,6 +42,8 @@ public class MainActivity extends Activity
         //Let me know when someone adjusts the seekbar
         theSeekBar = (SeekBar)findViewById(R.id.seekBar);
         theSeekBar.setOnSeekBarChangeListener(this);
+
+
     }//onClick
 
     @Override
