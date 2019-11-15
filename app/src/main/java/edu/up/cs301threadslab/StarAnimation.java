@@ -21,9 +21,13 @@ public class StarAnimation extends Animation {
     /* when this is set to 'false' the next animation frame won't twinkle */
     private boolean twinkle = true;
 
+    private int oldProgress = 0;
+
     /** ctor expects to be told the size of the animation canvas */
     public StarAnimation(int initWidth, int initHeight) {
         super(initWidth, initHeight);
+        NewThreadClass myNewThread = new NewThreadClass(this);
+        myNewThread.start();
     }
 
     /** whenever the canvas size changes, generate new stars */
@@ -59,12 +63,17 @@ public class StarAnimation extends Animation {
     }//removeStar
 
     /** draws the next frame of the animation */
+
     @Override
     public void draw(Canvas canvas) {
-        for (Star s : field) {
-            s.draw(canvas);
-            if (this.twinkle) {
-                s.twinkle();
+        synchronized (field) {
+            for (Star s : field) {
+
+                s.draw(canvas);
+                if (this.twinkle) {
+                    s.twinkle();
+                }
+
             }
         }
 
@@ -74,12 +83,26 @@ public class StarAnimation extends Animation {
     /** the seekbar progress specifies the brightnes of the stars. */
     @Override
     public void progressChange(int newProgress) {
-        int brightness = 255 - (newProgress * 2);
+       // int brightness = 255 - (newProgress * 2);
 
-        for(int i = 0; i<newProgress; i++){
-            addStar();
+        newProgress = newProgress * 10;
+        int progressDifference = newProgress - oldProgress;
+        Log.i("stars", "prog diff: "+progressDifference);
+
+        for(int i = 0; i< java.lang.Math.abs(progressDifference); i++){
+            if(progressDifference>0){
+                if(field.size()<999){
+                    addStar();
+                }
+            }
+            else if(progressDifference <0){
+                if(field.size()>100) {
+                    removeStar();
+                }
+            }
         }
-        Star.starPaint.setColor(Color.rgb(brightness, brightness, brightness));
+        this.oldProgress = newProgress;
+     //   Star.starPaint.setColor(Color.rgb(brightness, brightness, brightness));
         this.twinkle = false;
     }
 }//class StarAnimation

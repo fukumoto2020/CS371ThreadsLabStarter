@@ -22,6 +22,7 @@ public class MainActivity extends Activity
 
     private ThreadClass myThread;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +33,7 @@ public class MainActivity extends Activity
         myAV.addAnimation(new StarAnimation(myAV.getMyWidth(), myAV.getMyHeight()));
 
         myThread = new ThreadClass(myAV);
+
 
         myThread.start();
 
